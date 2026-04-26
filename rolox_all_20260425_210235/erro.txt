@@ -1,0 +1,279 @@
+Consulte o final desta mensagem para obter detalhes sobre como chamar a 
+depuração just-in-time (JIT) em vez desta caixa de diálogo.
+
+************** Texto de Exceção **************
+System.Net.Sockets.SocketException (10048): Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at System.Net.Sockets.TcpListener.Start(Int32 backlog)
+   at RoloxApp.Services.P2PServerService.StartHostAsync(String hostUsername, Int32 port) in C:\Users\arthur arthurm\Desktop\ROBLOX COPIA\APP\RoloxApp\Services\P2PServerService.cs:line 33
+   at RoloxApp.GamePage.<>c__DisplayClass8_0.<<InitUI>b__1>d.MoveNext() in C:\Users\arthur arthurm\Desktop\ROBLOX COPIA\APP\RoloxApp\Forms\GamePage.cs:line 114
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Task.<>c.<ThrowAsync>b__128_0(Object state)
+   at InvokeStub_SendOrPostCallback.Invoke(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+
+
+************** Assemblies Carregados **************
+System.Private.CoreLib
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Private.CoreLib.dll
+----------------------------------------
+RoloxApp
+    Versão do Assembly: 1.0.0.0
+    Localização: C:\Users\arthur arthurm\Desktop\ROBLOX COPIA\APP\RoloxApp\bin\Debug\net8.0-windows\RoloxApp.dll
+----------------------------------------
+System.Runtime
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Runtime.dll
+----------------------------------------
+System.Windows.Forms
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.26\System.Windows.Forms.dll
+----------------------------------------
+System.Windows.Forms.Primitives
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.26\System.Windows.Forms.Primitives.dll
+----------------------------------------
+System.Runtime.InteropServices
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Runtime.InteropServices.dll
+----------------------------------------
+System.Threading
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Threading.dll
+----------------------------------------
+System.Diagnostics.TraceSource
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Diagnostics.TraceSource.dll
+----------------------------------------
+System.Collections
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Collections.dll
+----------------------------------------
+System.ComponentModel.Primitives
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.ComponentModel.Primitives.dll
+----------------------------------------
+System.Drawing.Primitives
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Drawing.Primitives.dll
+----------------------------------------
+System.Drawing.Common
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.26\System.Drawing.Common.dll
+----------------------------------------
+Newtonsoft.Json
+    Versão do Assembly: 13.0.0.0
+    Localização: C:\Users\arthur arthurm\Desktop\ROBLOX COPIA\APP\RoloxApp\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
+----------------------------------------
+System.Linq.Expressions
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Linq.Expressions.dll
+----------------------------------------
+System.ComponentModel.TypeConverter
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.ComponentModel.TypeConverter.dll
+----------------------------------------
+System.ObjectModel
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.ObjectModel.dll
+----------------------------------------
+System.Collections.Specialized
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Collections.Specialized.dll
+----------------------------------------
+System.Net.Http
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Net.Http.dll
+----------------------------------------
+System.Net.Primitives
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Net.Primitives.dll
+----------------------------------------
+System.Diagnostics.Tracing
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Diagnostics.Tracing.dll
+----------------------------------------
+System.Diagnostics.DiagnosticSource
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Diagnostics.DiagnosticSource.dll
+----------------------------------------
+System.Net.Security
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Net.Security.dll
+----------------------------------------
+System.Security.Cryptography
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Security.Cryptography.dll
+----------------------------------------
+System.Private.Uri
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Private.Uri.dll
+----------------------------------------
+System.Memory
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Memory.dll
+----------------------------------------
+Microsoft.Win32.Primitives
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\Microsoft.Win32.Primitives.dll
+----------------------------------------
+System.ComponentModel.EventBasedAsync
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.ComponentModel.EventBasedAsync.dll
+----------------------------------------
+System.Threading.Thread
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Threading.Thread.dll
+----------------------------------------
+Accessibility
+    Versão do Assembly: 4.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.26\Accessibility.dll
+----------------------------------------
+System.ComponentModel
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.ComponentModel.dll
+----------------------------------------
+System.Numerics.Vectors
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Numerics.Vectors.dll
+----------------------------------------
+Microsoft.Win32.SystemEvents
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.26\Microsoft.Win32.SystemEvents.dll
+----------------------------------------
+System.Collections.NonGeneric
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Collections.NonGeneric.dll
+----------------------------------------
+System.Diagnostics.Process
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Diagnostics.Process.dll
+----------------------------------------
+Microsoft.Win32.Registry
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\Microsoft.Win32.Registry.dll
+----------------------------------------
+Microsoft.VisualBasic.Core
+    Versão do Assembly: 13.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\Microsoft.VisualBasic.Core.dll
+----------------------------------------
+Microsoft.VisualBasic.Forms
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.26\Microsoft.VisualBasic.Forms.dll
+----------------------------------------
+System.Resources.Extensions
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.26\System.Resources.Extensions.dll
+----------------------------------------
+System.Drawing
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.26\System.Drawing.dll
+----------------------------------------
+System.Collections.Concurrent
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Collections.Concurrent.dll
+----------------------------------------
+Microsoft.VisualBasic.Forms.resources
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.26\pt-BR\Microsoft.VisualBasic.Forms.resources.dll
+----------------------------------------
+System.Linq
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Linq.dll
+----------------------------------------
+System.Net.Sockets
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Net.Sockets.dll
+----------------------------------------
+System.Threading.Overlapped
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Threading.Overlapped.dll
+----------------------------------------
+System.Net.NameResolution
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Net.NameResolution.dll
+----------------------------------------
+System.Threading.ThreadPool
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Threading.ThreadPool.dll
+----------------------------------------
+System.Runtime.Intrinsics
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Runtime.Intrinsics.dll
+----------------------------------------
+System.Security.Principal.Windows
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Security.Principal.Windows.dll
+----------------------------------------
+System.Security.Claims
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Security.Claims.dll
+----------------------------------------
+System.Runtime.Numerics
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Runtime.Numerics.dll
+----------------------------------------
+System.Runtime.Serialization.Primitives
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Runtime.Serialization.Primitives.dll
+----------------------------------------
+System.Runtime.Serialization.Formatters
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Runtime.Serialization.Formatters.dll
+----------------------------------------
+System.Net.Requests
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Net.Requests.dll
+----------------------------------------
+System.Net.WebHeaderCollection
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Net.WebHeaderCollection.dll
+----------------------------------------
+System.Net.ServicePoint
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Net.ServicePoint.dll
+----------------------------------------
+System.Diagnostics.FileVersionInfo
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Diagnostics.FileVersionInfo.dll
+----------------------------------------
+System.Net.Quic
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Net.Quic.dll
+----------------------------------------
+System.Runtime.Loader
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Runtime.Loader.dll
+----------------------------------------
+System.Windows.Forms.resources
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.26\pt-BR\System.Windows.Forms.resources.dll
+----------------------------------------
+System.Diagnostics.StackTrace
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Diagnostics.StackTrace.dll
+----------------------------------------
+System.Reflection.Metadata
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Reflection.Metadata.dll
+----------------------------------------
+System.Collections.Immutable
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Collections.Immutable.dll
+----------------------------------------
+System.IO.MemoryMappedFiles
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.IO.MemoryMappedFiles.dll
+----------------------------------------
+System.Text.Encoding.Extensions
+    Versão do Assembly: 8.0.0.0
+    Localização: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26\System.Text.Encoding.Extensions.dll
+----------------------------------------
+
+************** Depuração JIT **************
+
+
+= natural disaster survival (hospetar server)
