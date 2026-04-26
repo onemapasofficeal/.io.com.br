@@ -1,105 +1,178 @@
-using System;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
 
-Console.WriteLine("╔══════════════════════════════════╗");
-Console.WriteLine("║      Gerador de Tokens Teste     ║");
-Console.WriteLine("╚══════════════════════════════════╝");
+/// <summary>
+/// UmbrelInstaller — Instala uma ISO/IMG no sistema Linux
+/// Extrai os arquivos da ISO para /umbrel-boot e configura o GRUB
+/// para oferecer a opção de boot na próxima inicialização.
+/// 
+/// REQUER: Linux + root (sudo) + pacotes: mount, grub2
+/// </summary>
+
+if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+{
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine("Este app só roda em Linux.");
+    Console.ResetColor();
+    return;
+}
+
+if (Environment.GetEnvironmentVariable("USER") != "root" &&
+    Environment.GetEnvironmentVariable("SUDO_USER") == null)
+{
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.WriteLine("Execute com sudo: sudo ./UmbrelInstaller");
+    Console.ResetColor();
+    return;
+}
+
+Console.ForegroundColor = ConsoleColor.Cyan;
+Console.WriteLine("╔══════════════════════════════════════╗");
+Console.WriteLine("║       UmbrelInstaller v1.0           ║");
+Console.WriteLine("║  Instala ISO/IMG com opção de boot   ║");
+Console.WriteLine("╚══════════════════════════════════════╝");
+Console.ResetColor();
 Console.WriteLine();
 
-while (true)
+// ── 1. Seleciona a ISO/IMG ───────────────────────────────────────────────
+Console.Write("Caminho da ISO/IMG: ");
+string? isoPath = Console.ReadLine()?.Trim().Trim('"');
+
+if (string.IsNullOrEmpty(isoPath) || !File.Exists(isoPath))
 {
-    Console.WriteLine("1 - Gerar token aleatório");
-    Console.WriteLine("2 - Gerar token com expiração (4 min)");
-    Console.WriteLine("3 - Verificar se token expirou");
-    Console.WriteLine("0 - Sair");
-    Console.Write("\nEscolha: ");
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine($"Arquivo não encontrado: {isoPath}");
+    Console.ResetColor();
+    return;
+}
 
-    string? op = Console.ReadLine();
+string isoName = Path.GetFileNameWithoutExtension(isoPath);
+Console.WriteLine($"ISO selecionada: {isoName}");
+Console.WriteLine();
 
-    switch (op)
-    {
-        case "1":
-            string token = GerarToken();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\nToken: {token}");
-            Console.ResetColor();
-            break;
+// ── 2. Cria pasta de destino em /boot ────────────────────────────────────
+string bootDir   = $"/boot/umbrel-{isoName}";
+string mountDir  = $"/mnt/umbrel-iso-{Guid.NewGuid():N}";
 
-        case "2":
-            var (tok, exp) = GerarTokenComExpiracao(TimeSpan.FromMinutes(4));
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"\nToken:    {tok}");
-            Console.WriteLine($"Expira:   {exp:HH:mm:ss}");
-            Console.WriteLine($"Duração:  4 minutos");
-            Console.ResetColor();
-            break;
+Console.WriteLine($"Criando pasta: {bootDir}");
+Directory.CreateDirectory(bootDir);
+Directory.CreateDirectory(mountDir);
 
-        case "3":
-            Console.Write("Cole o token: ");
-            string? t = Console.ReadLine();
-            if (string.IsNullOrEmpty(t)) break;
-            bool expirou = VerificarExpiracao(t);
-            Console.ForegroundColor = expirou ? ConsoleColor.Red : ConsoleColor.Green;
-            Console.WriteLine(expirou ? "❌ Token expirado!" : "✅ Token válido!");
-            Console.ResetColor();
-            break;
+// ── 3. Monta a ISO e copia os arquivos ───────────────────────────────────
+Console.WriteLine("Montando ISO...");
+int mountResult = Run("mount", $"-o loop \"{isoPath}\" \"{mountDir}\"");
+if (mountResult != 0)
+{
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine("Falha ao montar a ISO. Verifique se o arquivo é válido.");
+    Console.ResetColor();
+    Directory.Delete(mountDir, true);
+    return;
+}
 
-        case "0":
-            return;
-    }
+Console.WriteLine("Copiando arquivos da ISO...");
+Run("cp", $"-r \"{mountDir}/.\" \"{bootDir}/\"");
+
+Console.WriteLine("Desmontando ISO...");
+Run("umount", $"\"{mountDir}\"");
+Directory.Delete(mountDir, true);
+
+// ── 4. Encontra vmlinuz e initrd ─────────────────────────────────────────
+string? kernel = FindFile(bootDir, "vmlinuz*") ?? FindFile(bootDir, "kernel*");
+string? initrd = FindFile(bootDir, "initrd*")  ?? FindFile(bootDir, "initramfs*");
+
+if (kernel == null || initrd == null)
+{
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.WriteLine("Aviso: kernel ou initrd não encontrado na ISO.");
+    Console.WriteLine("A entrada GRUB será criada com caminhos genéricos.");
+    Console.ResetColor();
+    kernel ??= $"{bootDir}/vmlinuz";
+    initrd ??= $"{bootDir}/initrd.img";
+}
+
+Console.WriteLine($"Kernel : {kernel}");
+Console.WriteLine($"Initrd : {initrd}");
+
+// ── 5. Cria entrada no GRUB ──────────────────────────────────────────────
+string grubEntry = $@"
+menuentry ""{isoName} (UmbrelInstaller)"" {{
+    insmod part_gpt
+    insmod ext2
+    linux   {kernel} quiet splash
+    initrd  {initrd}
+}}
+";
+
+string grubCustom = "/etc/grub.d/40_custom";
+Console.WriteLine($"\nAdicionando entrada ao GRUB: {grubCustom}");
+
+string existing = File.Exists(grubCustom) ? File.ReadAllText(grubCustom) : "#!/bin/sh\nexec tail -n +3 $0\n";
+if (!existing.Contains(isoName))
+    File.WriteAllText(grubCustom, existing + grubEntry);
+
+Run("chmod", $"+x \"{grubCustom}\"");
+
+// ── 6. Atualiza o GRUB ───────────────────────────────────────────────────
+Console.WriteLine("Atualizando GRUB...");
+int grubResult = Run("update-grub", "");
+if (grubResult != 0)
+    grubResult = Run("grub2-mkconfig", "-o /boot/grub2/grub.cfg");
+
+// ── 7. Resultado ─────────────────────────────────────────────────────────
+Console.WriteLine();
+if (grubResult == 0)
+{
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine("✅ Instalação concluída!");
     Console.WriteLine();
+    Console.WriteLine("Na próxima inicialização aparecerá no menu GRUB:");
+    Console.WriteLine($"  → {isoName} (UmbrelInstaller)");
+    Console.WriteLine("  → Sistema atual");
+    Console.WriteLine();
+    Console.WriteLine("Reinicie o PC para ver o menu de boot.");
 }
-
-static string GerarToken()
+else
 {
-    byte[] bytes = RandomNumberGenerator.GetBytes(32);
-    return "tok_" + Convert.ToBase64String(bytes)
-        .Replace("+", "-").Replace("/", "_").Replace("=", "");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.WriteLine("⚠️  Arquivos copiados, mas GRUB não foi atualizado automaticamente.");
+    Console.WriteLine("Execute manualmente: sudo update-grub");
 }
+Console.ResetColor();
 
-static (string token, DateTime expiracao) GerarTokenComExpiracao(TimeSpan duracao)
-{
-    DateTime exp    = DateTime.UtcNow.Add(duracao);
-    long     ticks  = exp.Ticks;
-    byte[]   random = RandomNumberGenerator.GetBytes(16);
-
-    // Embute o timestamp no token
-    byte[] tickBytes = BitConverter.GetBytes(ticks);
-    byte[] payload   = new byte[tickBytes.Length + random.Length];
-    Buffer.BlockCopy(tickBytes, 0, payload, 0,              tickBytes.Length);
-    Buffer.BlockCopy(random,   0, payload, tickBytes.Length, random.Length);
-
-    // HMAC para integridade
-    byte[] key  = Encoding.UTF8.GetBytes("RoloxStudio_2026");
-    using var h = new HMACSHA256(key);
-    byte[] mac  = h.ComputeHash(payload);
-
-    byte[] final = new byte[payload.Length + 8];
-    Buffer.BlockCopy(payload, 0, final, 0,              payload.Length);
-    Buffer.BlockCopy(mac,     0, final, payload.Length, 8); // só 8 bytes do MAC
-
-    string token = "rtok_" + Convert.ToBase64String(final)
-        .Replace("+", "-").Replace("/", "_").Replace("=", "");
-
-    return (token, exp);
-}
-
-static bool VerificarExpiracao(string token)
+// ── Helpers ──────────────────────────────────────────────────────────────
+static int Run(string cmd, string args)
 {
     try
     {
-        if (!token.StartsWith("rtok_")) return true;
-        string b64 = token[5..].Replace("-", "+").Replace("_", "/");
-        int pad = b64.Length % 4;
-        if (pad > 0) b64 += new string('=', 4 - pad);
-
-        byte[] final    = Convert.FromBase64String(b64);
-        byte[] tickBytes = final[..8];
-        long   ticks    = BitConverter.ToInt64(tickBytes);
-        DateTime exp    = new DateTime(ticks, DateTimeKind.Utc);
-
-        return DateTime.UtcNow > exp;
+        var p = Process.Start(new ProcessStartInfo
+        {
+            FileName               = cmd,
+            Arguments              = args,
+            UseShellExecute        = false,
+            RedirectStandardOutput = false,
+            RedirectStandardError  = false
+        });
+        p?.WaitForExit();
+        return p?.ExitCode ?? -1;
     }
-    catch { return true; }
+    catch (Exception ex)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"Erro ao executar {cmd}: {ex.Message}");
+        Console.ResetColor();
+        return -1;
+    }
+}
+
+static string? FindFile(string dir, string pattern)
+{
+    try
+    {
+        var files = Directory.GetFiles(dir, pattern, SearchOption.AllDirectories);
+        return files.Length > 0 ? files[0] : null;
+    }
+    catch { return null; }
 }
