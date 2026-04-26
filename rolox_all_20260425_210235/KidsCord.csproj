@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>KidsCord</AssemblyName>
+    <RootNamespace>KidsCord</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+    <PackageReference Include="Octokit" Version="13.0.1" />
+  </ItemGroup>
+
+  <!-- Exclui o projeto ia_aprender da compilação do KidsCord -->
+  <ItemGroup>
+    <Compile Remove="ia_aprender\**" />
+    <EmbeddedResource Remove="ia_aprender\**" />
+    <None Remove="ia_aprender\**" />
+    <Content Remove="ia_aprender\**" />
+  </ItemGroup>
+
+</Project>
