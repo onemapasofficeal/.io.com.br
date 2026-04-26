@@ -1,27 +1,40 @@
-using System;
+﻿using System;
 using System.Windows.Forms;
+using KidsCord.Forms;
+using KidsCord.Models;
+using KidsCord.Services;
 
-namespace RoloxStudio
+namespace KidsCord;
+
+static class Program
 {
-    static class Program
+    [STAThread]
+    static void Main()
     {
-        [STAThread]
-        static void Main()
-        {
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.ThreadException += (s, e) =>
-                MessageBox.Show(e.Exception.ToString(), "Erro — RoloxStudio",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+        ApplicationConfiguration.Initialize();
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
 
-            try
+        // Registra no startup do Windows (silencioso, só na primeira vez)
+        if (!StartupService.EstaRegistrado())
+            StartupService.Registrar();
+
+        // Tenta carregar perfil salvo
+        var perfil = PerfilManager.Carregar();
+
+        if (perfil != null && !string.IsNullOrWhiteSpace(perfil.Nome))
+        {
+            // Perfil já existe — entra direto
+            Application.Run(new MainForm(perfil.Nome, perfil.AvatarIndex));
+        }
+        else
+        {
+            // Primeiro acesso — mostra tela de login
+            using var login = new LoginForm();
+            if (login.ShowDialog() == DialogResult.OK)
             {
-                ApplicationConfiguration.Initialize();
-                Application.Run(new MainForm());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "Erro ao Iniciar — RoloxStudio",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                PerfilManager.Salvar(login.NomeUsuario, login.AvatarIndex);
+                Application.Run(new MainForm(login.NomeUsuario, login.AvatarIndex));
             }
         }
     }
