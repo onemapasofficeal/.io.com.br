@@ -1,20 +1,18 @@
-using System;
-using System.Windows.Forms;
+using FriendEditor.Forms;
 
-namespace RoloxLife
+namespace FriendEditor;
+
+static class Program
 {
-    static class Program
+    [STAThread]
+    static void Main()
     {
-        [STAThread]
-        static void Main()
-        {
-            ApplicationConfiguration.Initialize();
+        Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+        Application.ThreadException += (s, e) =>
+            MessageBox.Show(e.Exception.ToString(), "Erro — Friend Editor",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            string? saved = SessionStore.Load();
-            if (!string.IsNullOrEmpty(saved))
-                Application.Run(new MainForm(saved));
-            else
-                Application.Run(new LoginForm());
-        }
+        ApplicationConfiguration.Initialize();
+        Application.Run(new MainForm());
     }
 }
