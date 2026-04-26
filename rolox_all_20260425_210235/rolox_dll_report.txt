@@ -1,0 +1,13 @@
+ROLOX DLL ANALYZER — 21/04/2026 13:05:13
+Pasta: C:\Users\arthur arthurm\Desktop\PASTAS\ROBLOX COPIA\ROBLOX-GO
+============================================================
+
+[RobloxPlayerBeta.dll]
+  Arch=x64  DLL=True  GUI (Windows)
+  Imports: ntdll.dll, KERNEL32.dll, USER32.dll
+  Exports: run
+
+[WebView2Loader.dll]
+  Arch=x64  DLL=True  Console
+  Imports: KERNEL32.dll
+  Exports: CompareBrowserVersions, CreateCoreWebView2Environment, CreateCoreWebView2EnvironmentWithOptions, GetAvailableCoreWebView2BrowserVersionString, GetAvailableCoreWebView2BrowserVersionStringWithOptions
